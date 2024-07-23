@@ -6,13 +6,15 @@
 /*   By: mde-lang <mde-lang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:44:59 by mde-lang          #+#    #+#             */
-/*   Updated: 2024/07/23 16:51:15 by mde-lang         ###   ########.fr       */
+/*   Updated: 2024/07/23 17:51:56 by mde-lang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Bureaucrat.hpp"
 
 Bureaucrat::Bureaucrat() : _name("unknown"), _grade(150) {}
+
+Bureaucrat::~Bureaucrat() {}
 
 Bureaucrat::Bureaucrat(std::string name, int grade) : _name(name), _grade(grade)
 {
@@ -32,7 +34,17 @@ Bureaucrat::Bureaucrat(std::string name, int grade) : _name(name), _grade(grade)
 	}
 }
 
-Bureaucrat::~Bureaucrat() {}
+Bureaucrat::Bureaucrat(Bureaucrat const &src)
+{
+	*this = src;
+}
+
+Bureaucrat &Bureaucrat::operator=(Bureaucrat const &src)
+{
+	this->_grade = src._grade;
+	this->_name = src._name;
+	return *this;
+}
 
 void Bureaucrat::gradeChecker(int grade)
 {
