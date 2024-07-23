@@ -6,7 +6,7 @@
 /*   By: mde-lang <mde-lang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:11:42 by mde-lang          #+#    #+#             */
-/*   Updated: 2024/07/22 18:23:45 by mde-lang         ###   ########.fr       */
+/*   Updated: 2024/07/23 16:49:35 by mde-lang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,23 @@
 
 int main()
 {
-	Bureaucrat crat("George Abitbol", 0);
-
-	crat.downGrade();
-	std::cout << std::endl;
-	std::cout << crat.getName() << std::endl;
-	std::cout << "grade : " << crat.getGrade() << std::endl;
+	Bureaucrat crat("George Abitbol", 2);
+	try
+	{
+		//crat.downGrade();
+		crat.upGrade();
+	}
+	catch(const Bureaucrat::GradeTooHighException& e)
+	{
+		std::cerr << e.what() << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
+	catch(const Bureaucrat::GradeTooLowException& e)
+	{
+		std::cerr << e.what() << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
+	std::cout << crat << std::endl;
 
 	return 0;
 }
