@@ -1,5 +1,7 @@
 NAME = main
-SOURCES = main.cpp Bureaucrat.cpp Form.cpp
+SOURCES = 	sources/main.cpp \
+			sources/Bureaucrat.cpp \
+			sources/Form.cpp \
 
 OBJECTS = $(SOURCES:.cpp=.o)
 

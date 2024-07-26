@@ -23,7 +23,7 @@ public:
 	void upGrade();
 	void downGrade();
 	void signForm(Form &form);
-	/////////////////////////////////////////////////////
+
 	class GradeTooHighException : public std::exception {
 	public:
 		GradeTooHighException(const char *error);
@@ -33,17 +33,22 @@ public:
 	private:
 		const char *_error;
 	};
+
 	class GradeTooLowException : public std::exception {
 	public:
-		const char* what() const throw() {
-			return "Grade is too low!";
+		GradeTooLowException(const char *error);
+		virtual const char* what() const throw() {
+			return this->_error;
 		}
+	private:
+		const char *_error;
 	};
 
 private:
 
 	std::string	_name;
 	int			_grade;
+
 };
 
 std::ostream &operator<<(std::ostream &o, Bureaucrat const &rhs);

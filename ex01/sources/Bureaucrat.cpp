@@ -6,12 +6,11 @@
 /*   By: mde-lang <mde-lang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:44:59 by mde-lang          #+#    #+#             */
-/*   Updated: 2024/07/25 15:47:54 by mde-lang         ###   ########.fr       */
+/*   Updated: 2024/07/26 16:53:50 by mde-lang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Bureaucrat.hpp"
-//#include "Form.hpp"
+#include "../includes/Bureaucrat.hpp"
 
 Bureaucrat::Bureaucrat() : _name("unknown"), _grade(150) {}
 
@@ -26,12 +25,12 @@ Bureaucrat::Bureaucrat(std::string name, int grade) : _name(name), _grade(grade)
 	catch (const GradeTooHighException &e)
 	{
 		std::cerr << e.what() << std::endl;
-		//std::exit(EXIT_FAILURE);
+		std::exit(EXIT_FAILURE);
 	}
 	catch (const GradeTooLowException &e)
 	{
 		std::cerr << e.what() << std::endl;
-		//std::exit(EXIT_FAILURE);
+		std::exit(EXIT_FAILURE);
 	}
 }
 
@@ -50,22 +49,22 @@ Bureaucrat &Bureaucrat::operator=(Bureaucrat const &src)
 void Bureaucrat::gradeChecker(int grade)
 {
 	if (grade < 1)
-		throw GradeTooHighException();
+		throw GradeTooHighException("The bureaucrat's grade is too high!");
 	else if (grade > 150)
-		throw GradeTooLowException();
+		throw GradeTooLowException("The bureaucrat's grade is too low!");
 }
 
 void Bureaucrat::upGrade()
 {
 	if (this->_grade == 1)
-		throw GradeTooHighException();
+		throw GradeTooHighException("The bureaucrat's grade is too high to be increased");
 	this->_grade -= 1;
 }
 
 void Bureaucrat::downGrade()
 {
 	if (this->_grade == 150)
-		throw GradeTooLowException();
+		throw GradeTooLowException("The bureaucrat's grade is too high to be reduced");
 	this->_grade += 1;
 }
 
@@ -90,4 +89,14 @@ void Bureaucrat::signForm(Form &form)
 		std::cout << this->_name << " signed " << form.getName() << std::endl;
 	else
 		std::cout << this->_name << " couldn't sign " << form.getName() << " form, because " << form.getReason() << std::endl;
+}
+
+Bureaucrat::GradeTooHighException::GradeTooHighException(const char *error)
+{
+	std::cout << error << std::endl;
+}
+
+Bureaucrat::GradeTooLowException::GradeTooLowException(const char *error)
+{
+	std::cout << error << std::endl;
 }

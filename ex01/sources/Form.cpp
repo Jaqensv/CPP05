@@ -6,11 +6,11 @@
 /*   By: mde-lang <mde-lang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 17:54:39 by mde-lang          #+#    #+#             */
-/*   Updated: 2024/07/25 16:01:32 by mde-lang         ###   ########.fr       */
+/*   Updated: 2024/07/26 16:54:03 by mde-lang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Form.hpp"
+#include "../includes/Form.hpp"
 
 Form::Form() {}
 
@@ -77,9 +77,9 @@ std::string Form::getReason() const
 void Form::formGradeChecker(int gts, int gte)
 {
 	if (gts < 1 || gte < 1)
-		throw GradeTooHighException();
+		throw GradeTooHighException("There is an error in the form.");
 	else if (gts > 150 || gte > 150)
-		throw GradeTooLowException();
+		throw GradeTooLowException("There is an error in the form.");
 }
 
 void Form::beSigned(Bureaucrat bureaucrat)
@@ -89,7 +89,7 @@ void Form::beSigned(Bureaucrat bureaucrat)
 	else
 	{
 		this->_reason = "his grade is too low.";
-		throw GradeTooLowException();
+		throw GradeTooLowException("The bureaucrat doesn't have the right grade to sign the form.\n");
 	}
 }
 
@@ -102,4 +102,14 @@ std::ostream &operator<<(std::ostream &o, Form const &rhs)
 	else
 		is_signed = "unsigned";
 	return (o << "Form " << rhs.getName() << ", with a needed grade to sign of " << rhs.getGts() << " and a needed grade to execute of " << rhs.getGte() << " is " << is_signed << "." << std::endl);
+}
+
+Form::GradeTooHighException::GradeTooHighException(const char *error)
+{
+	std::cout << error << std::endl;
+}
+
+Form::GradeTooLowException::GradeTooLowException(const char *error)
+{
+	std::cout << error << std::endl;
 }

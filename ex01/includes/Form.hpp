@@ -24,18 +24,25 @@ public:
 	std::string getReason() const;
 	void formGradeChecker(int gts, int gte);
 	void beSigned(Bureaucrat bureaucrat);
-	//////////////////////////////////////////////
-	class GradeTooHighException : std::exception {
+
+	class GradeTooHighException : public std::exception {
 	public:
-		const char* what() const throw() {
-			return "Grade is too high!";
+		GradeTooHighException(const char *error);
+		virtual const char* what() const throw() {
+			return this->_error;
 		}
+	private:
+		const char* _error;
 	};
-	class GradeTooLowException : std::exception {
+
+	class GradeTooLowException : public std::exception {
 	public:
-		const char* what() const throw() {
-			return "Grade is too low!";
+		GradeTooLowException(const char *error);
+		virtual const char* what() const throw() {
+			return this->_error;
 		}
+	private:
+		const char* _error;
 	};
 
 private:
@@ -45,6 +52,7 @@ private:
 	int			_gts; // grade to sign
 	int			_gte; // grade to execute
 	std::string	_reason;
+
 };
 
 std::ostream &operator<<(std::ostream &o, Form const &rhs);
