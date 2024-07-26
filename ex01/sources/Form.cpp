@@ -6,7 +6,7 @@
 /*   By: mde-lang <mde-lang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 17:54:39 by mde-lang          #+#    #+#             */
-/*   Updated: 2024/07/26 16:54:03 by mde-lang         ###   ########.fr       */
+/*   Updated: 2024/07/26 17:18:26 by mde-lang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,20 +77,37 @@ std::string Form::getReason() const
 void Form::formGradeChecker(int gts, int gte)
 {
 	if (gts < 1 || gte < 1)
+	{
+		this->form_err = true;
 		throw GradeTooHighException("There is an error in the form.");
+	}
 	else if (gts > 150 || gte > 150)
+	{
+		this->form_err = true;
 		throw GradeTooLowException("There is an error in the form.");
+	}
 }
 
 void Form::beSigned(Bureaucrat bureaucrat)
 {
-	if (bureaucrat.getGrade() <= this->_gts)
-		this->_signed = true;
-	else
+	try
 	{
-		this->_reason = "his grade is too low.";
-		throw GradeTooLowException("The bureaucrat doesn't have the right grade to sign the form.\n");
+		if (bureaucrat.getGrade() <= this->_gts)
+			this->_signed = true;
+		else
+		{
+			if (this->form_err == false)
+			{
+				this->_reason = "his grade is too low.";
+				throw GradeTooLowException("The bureaucrat doesn't have the right grade to sign the form.");
+			}
+		}
 	}
+	catch (const std::exception &e)
+	{
+		std::cerr << e.what() << std::endl;
+	}
+	bureaucrat.signForm(*this);
 }
 
 std::ostream &operator<<(std::ostream &o, Form const &rhs) 

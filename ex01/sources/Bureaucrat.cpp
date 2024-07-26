@@ -6,7 +6,7 @@
 /*   By: mde-lang <mde-lang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:44:59 by mde-lang          #+#    #+#             */
-/*   Updated: 2024/07/26 16:53:50 by mde-lang         ###   ########.fr       */
+/*   Updated: 2024/07/26 17:23:54 by mde-lang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,32 @@ void Bureaucrat::gradeChecker(int grade)
 
 void Bureaucrat::upGrade()
 {
-	if (this->_grade == 1)
-		throw GradeTooHighException("The bureaucrat's grade is too high to be increased");
-	this->_grade -= 1;
+	try
+	{
+		if (this->_grade == 1)
+			throw GradeTooHighException("The bureaucrat's grade is too high to be increased");
+		this->_grade -= 1;
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << e.what() << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
 }
 
 void Bureaucrat::downGrade()
 {
-	if (this->_grade == 150)
-		throw GradeTooLowException("The bureaucrat's grade is too high to be reduced");
-	this->_grade += 1;
+	try
+	{
+		if (this->_grade == 150)
+			throw GradeTooLowException("The bureaucrat's grade is too high to be reduced");
+		this->_grade += 1;
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << e.what() << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
 }
 
 std::string Bureaucrat::getName() const

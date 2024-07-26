@@ -24,6 +24,7 @@ public:
 	std::string getReason() const;
 	void formGradeChecker(int gts, int gte);
 	void beSigned(Bureaucrat bureaucrat);
+	bool form_err;
 
 	class GradeTooHighException : public std::exception {
 	public:
