@@ -6,7 +6,7 @@
 /*   By: mde-lang <mde-lang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:44:59 by mde-lang          #+#    #+#             */
-/*   Updated: 2024/07/23 17:51:56 by mde-lang         ###   ########.fr       */
+/*   Updated: 2024/07/29 11:39:27 by mde-lang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ Bureaucrat::Bureaucrat(Bureaucrat const &src)
 Bureaucrat &Bureaucrat::operator=(Bureaucrat const &src)
 {
 	this->_grade = src._grade;
-	this->_name = src._name;
 	return *this;
 }
 
@@ -68,7 +67,7 @@ void Bureaucrat::downGrade()
 	this->_grade += 1;
 }
 
-std::string Bureaucrat::getName() const
+const std::string Bureaucrat::getName() const
 {
 	return this->_name;
 }

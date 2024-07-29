@@ -17,13 +17,13 @@ public:
 	Form(std::string name, int gts, int gte);
 	Form(Form const &src);
 	Form &operator=(Form const &src);
-	std::string getName() const;
+	const std::string getName() const;
 	bool getSigned() const;
 	int getGts() const;
 	int getGte() const;
 	std::string getReason() const;
 	void formGradeChecker(int gts, int gte);
-	void beSigned(Bureaucrat bureaucrat);
+	void beSigned(Bureaucrat &bureaucrat);
 	bool form_err;
 
 	class GradeTooHighException : public std::exception {
@@ -48,11 +48,11 @@ public:
 
 private:
 
-	std::string _name;
-	bool		_signed;
-	int			_gts; // grade to sign
-	int			_gte; // grade to execute
-	std::string	_reason;
+	const std::string 	_name;
+	bool				_signed;
+	const int			_gts; // grade to sign
+	const int			_gte; // grade to execute
+	std::string			_reason;
 
 };
 

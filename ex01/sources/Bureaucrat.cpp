@@ -6,7 +6,7 @@
 /*   By: mde-lang <mde-lang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:44:59 by mde-lang          #+#    #+#             */
-/*   Updated: 2024/07/26 17:23:54 by mde-lang         ###   ########.fr       */
+/*   Updated: 2024/07/29 12:14:49 by mde-lang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ Bureaucrat::Bureaucrat() : _name("unknown"), _grade(150) {}
 
 Bureaucrat::~Bureaucrat() {}
 
-Bureaucrat::Bureaucrat(std::string name, int grade) : _name(name), _grade(grade)
+Bureaucrat::Bureaucrat(const std::string name, int grade) : _name(name), _grade(grade)
 {
 	try
 	{
@@ -34,7 +34,7 @@ Bureaucrat::Bureaucrat(std::string name, int grade) : _name(name), _grade(grade)
 	}
 }
 
-Bureaucrat::Bureaucrat(Bureaucrat const &src)
+Bureaucrat::Bureaucrat(Bureaucrat const &src) : _name(src._name)
 {
 	*this = src;
 }
@@ -42,7 +42,6 @@ Bureaucrat::Bureaucrat(Bureaucrat const &src)
 Bureaucrat &Bureaucrat::operator=(Bureaucrat const &src)
 {
 	this->_grade = src._grade;
-	this->_name = src._name;
 	return *this;
 }
 
@@ -84,7 +83,7 @@ void Bureaucrat::downGrade()
 	}
 }
 
-std::string Bureaucrat::getName() const
+const std::string Bureaucrat::getName() const
 {
 	return this->_name;
 }
@@ -99,7 +98,7 @@ std::ostream &operator<<(std::ostream &o, Bureaucrat const &rhs)
 	return (o << rhs.getName() << ", grade " << rhs.getGrade());
 }
 
-void Bureaucrat::signForm(Form &form)
+void Bureaucrat::signForm(Form &form) const
 {
 	if (form.getSigned() == true)
 		std::cout << this->_name << " signed " << form.getName() << std::endl;

@@ -6,18 +6,22 @@
 /*   By: mde-lang <mde-lang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 17:54:39 by mde-lang          #+#    #+#             */
-/*   Updated: 2024/07/26 17:18:26 by mde-lang         ###   ########.fr       */
+/*   Updated: 2024/07/29 12:18:23 by mde-lang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Form.hpp"
 
-Form::Form() {}
+Form::Form() : _gts(150), _gte(150)
+{
+	this->_signed = false;
+}
 
 Form::~Form() {}
 
-Form::Form(std::string name, int gts, int gte) : _name(name), _gts(gts), _gte(gte)
+Form::Form(std::string name, const int gts, const int gte) : _name(name), _gts(gts), _gte(gte)
 {
+	this->_signed = false;
 	try
 	{
 		formGradeChecker(this->_gts, this->_gte);
@@ -34,22 +38,19 @@ Form::Form(std::string name, int gts, int gte) : _name(name), _gts(gts), _gte(gt
 	}
 }
 
-Form::Form(Form const &src)
+Form::Form(Form const &src) : _name(src._name), _signed(src._signed), _gts(src._gts), _gte(src._gte), _reason(src._reason)
 {
 	*this = src;
 }
 
 Form &Form::operator=(Form const &src)
 {
-	this->_name = src._name;
 	this->_signed = src._signed;
-	this->_gts = src._gts;
-	this->_gte = src._gte;
 	this->_reason = src._reason;
 	return *this;	
 }
 
-std::string Form::getName() const
+const std::string Form::getName() const
 {
 	return this->_name;
 }
@@ -88,7 +89,7 @@ void Form::formGradeChecker(int gts, int gte)
 	}
 }
 
-void Form::beSigned(Bureaucrat bureaucrat)
+void Form::beSigned(Bureaucrat &bureaucrat)
 {
 	try
 	{
