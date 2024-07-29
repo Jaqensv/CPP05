@@ -16,7 +16,7 @@ public:
 	~Form();
 	Form(std::string name, int gts, int gte);
 	Form(Form const &src);
-	Form &operator=(Form const &src);
+	Form &operator=(Form const &rhs);
 	const std::string getName() const;
 	bool getSigned() const;
 	int getGts() const;

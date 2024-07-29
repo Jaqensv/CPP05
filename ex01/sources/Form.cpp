@@ -6,7 +6,7 @@
 /*   By: mde-lang <mde-lang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 17:54:39 by mde-lang          #+#    #+#             */
-/*   Updated: 2024/07/29 12:18:23 by mde-lang         ###   ########.fr       */
+/*   Updated: 2024/07/29 16:38:17 by mde-lang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,13 @@ Form::Form(Form const &src) : _name(src._name), _signed(src._signed), _gts(src._
 	*this = src;
 }
 
-Form &Form::operator=(Form const &src)
+Form &Form::operator=(Form const &rhs)
 {
-	this->_signed = src._signed;
-	this->_reason = src._reason;
+	if (this != &rhs)
+	{
+		this->_signed = rhs._signed;
+		this->_reason = rhs._reason;
+	}
 	return *this;	
 }
 

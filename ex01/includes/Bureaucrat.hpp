@@ -16,7 +16,7 @@ public:
 	~Bureaucrat();
 	Bureaucrat(const std::string name, int grade);
 	Bureaucrat(Bureaucrat const &src);
-	Bureaucrat &operator=(Bureaucrat const &src);
+	Bureaucrat &operator=(Bureaucrat const &rhs);
 	void gradeChecker(int grade);
 	const std::string getName() const;
 	int	getGrade() const;
