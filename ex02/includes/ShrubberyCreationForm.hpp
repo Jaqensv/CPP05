@@ -11,8 +11,8 @@ public:
 	~ShrubberyCreationForm();
 	ShrubberyCreationForm(ShrubberyCreationForm const &src);
 	ShrubberyCreationForm &operator=(ShrubberyCreationForm const &src);
-
-private:
+	virtual void execute(Bureaucrat const &executor) const;
+	virtual void execution(Bureaucrat const &executor) const;
 
 };
 

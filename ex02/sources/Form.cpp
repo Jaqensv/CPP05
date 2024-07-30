@@ -24,17 +24,17 @@ AForm::AForm(const std::string name, const int gts, const int gte) : _name(name)
 	this->_signed = false;
 	try
 	{
-		formGradeChecker(this->_gts, this->_gte);
+		formGradeChecker(this->_gts, this->_gte, this->getName());
 	}
 	catch (const GradeTooHighException &e)
 	{
 		std::cerr << e.what() << std::endl;
-		_reason = "there is an error in the Aform.";
+		_reason = "there is an error in the form.";
 	}
 	catch (const GradeTooLowException &e)
 	{
 		std::cerr << e.what() << std::endl;
-		_reason = "there is an error in the Aform.";
+		_reason = "there is an error in the form.";
 	}
 }
 
@@ -78,17 +78,17 @@ std::string AForm::getReason() const
 	return this->_reason;
 }
 
-void AForm::formGradeChecker(int gts, int gte)
+void AForm::formGradeChecker(const int gts, const int gte, std::string target)
 {
 	if (gts < 1 || gte < 1)
 	{
 		this->form_err = true;
-		throw GradeTooHighException("There is an error in the Aform.");
+		throw GradeTooHighException("There is an error in the form", target.c_str());
 	}
 	else if (gts > 150 || gte > 150)
 	{
 		this->form_err = true;
-		throw GradeTooLowException("There is an error in the Aform.");
+		throw GradeTooLowException("There is an error in the form.");
 	}
 }
 
@@ -125,9 +125,12 @@ std::ostream &operator<<(std::ostream &o, AForm const &rhs)
 	return (o << "Form " << rhs.getName() << ", with a needed grade to sign of " << rhs.getGts() << " and a needed grade to execute of " << rhs.getGte() << " is " << is_signed << "." << std::endl);
 }
 
-AForm::GradeTooHighException::GradeTooHighException(const char *error)
-{
-	std::cout << error << std::endl;
+AForm::GradeTooHighException::GradeTooHighException(const char* error, const char* name) {
+	std::string test = std::string(error) + std::string(name);
+	_error = strdup(test.c_str());
+}
+
+AForm::GradeTooHighException::GradeTooHighException::~GradeTooHighException() throw() {
 }
 
 AForm::GradeTooLowException::GradeTooLowException(const char *error)

@@ -2,6 +2,7 @@ NAME = main
 SOURCES = 	sources/main.cpp \
 			sources/Bureaucrat.cpp \
 			sources/Form.cpp \
+			sources/ShrubberyCreationForm.cpp \
 
 OBJECTS = $(SOURCES:.cpp=.o)
 

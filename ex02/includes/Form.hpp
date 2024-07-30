@@ -4,6 +4,9 @@
 # include <iostream>
 # include <exception>
 # include <cstdlib>
+# include <cstring>
+# include <stdlib.h>
+# include <fstream>
 # include "Bureaucrat.hpp"
 
 class Bureaucrat;
@@ -22,16 +25,18 @@ public:
 	int getGts() const;
 	int getGte() const;
 	std::string getReason() const;
-	void formGradeChecker(int gts, int gte);
+	void formGradeChecker(const int gts, const int gte, std::string target);
 	void beSigned(Bureaucrat &bureaucrat);
 	virtual void execute(Bureaucrat const &executor) const = 0;
+	virtual void execution(Bureaucrat const &executor) const = 0;
 	bool form_err;
 
 	class GradeTooHighException : public std::exception {
 	public:
-		GradeTooHighException(const char *error);
+		virtual ~GradeTooHighException() throw();
+		GradeTooHighException(const char* error, const char* target);
 		virtual const char* what() const throw() {
-			return this->_error;
+			return _error;
 		}
 	private:
 		const char* _error;
@@ -47,6 +52,10 @@ public:
 		const char* _error;
 	};
 
+protected:
+
+	std::string 		_target;
+
 private:
 
 	const std::string 	_name;
@@ -54,6 +63,7 @@ private:
 	const int			_gts; // grade to sign
 	const int			_gte; // grade to execute
 	std::string			_reason;
+
 
 };
 
