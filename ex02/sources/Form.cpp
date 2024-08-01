@@ -24,17 +24,17 @@ AForm::AForm(const std::string name, const int gts, const int gte) : _name(name)
 	this->_signed = false;
 	try
 	{
-		formGradeChecker(this->_gts, this->_gte, this->getName());
+		formGradeChecker(gts, gte, name);
 	}
 	catch (const GradeTooHighException &e)
 	{
-		std::cerr << e.what() << std::endl;
-		_reason = "there is an error in the form.";
+		std::cout << "test 1" << std::endl;
+		_reason = name + " has a too high grade.";
 	}
 	catch (const GradeTooLowException &e)
 	{
-		std::cerr << e.what() << std::endl;
-		_reason = "there is an error in the form.";
+		std::cout << "test 2" << std::endl;
+		_reason = name + " has a too low grade.";
 	}
 }
 
@@ -63,6 +63,18 @@ bool AForm::getSigned() const
 	return this->_signed;
 }
 
+bool AForm::signProcess(bool iss)
+{
+	this->_signed = iss;
+	return this->_signed;
+}
+
+std::string AForm::reasonModifier(std::string reason)
+{
+	this->_reason = reason;
+	return this->_reason;
+}
+
 int AForm::getGts() const
 {
 	return this->_gts;
@@ -78,17 +90,17 @@ std::string AForm::getReason() const
 	return this->_reason;
 }
 
-void AForm::formGradeChecker(const int gts, const int gte, std::string target)
+void AForm::formGradeChecker(const int gts, const int gte, std::string name)
 {
-	if (gts < 1 || gte < 1)
+	if ((gts < 1 || gte < 1) && this->form_err == false)
 	{
 		this->form_err = true;
-		throw GradeTooHighException("There is an error in the form", target.c_str());
+		throw GradeTooHighException((std::string)name + " has a too high grade");
 	}
-	else if (gts > 150 || gte > 150)
+	else if ((gts > 150 || gte > 150) && this->form_err == false)
 	{
 		this->form_err = true;
-		throw GradeTooLowException("There is an error in the form.");
+		throw GradeTooLowException((std::string)name + " has a too low grade");
 	}
 }
 
@@ -125,15 +137,15 @@ std::ostream &operator<<(std::ostream &o, AForm const &rhs)
 	return (o << "Form " << rhs.getName() << ", with a needed grade to sign of " << rhs.getGts() << " and a needed grade to execute of " << rhs.getGte() << " is " << is_signed << "." << std::endl);
 }
 
-AForm::GradeTooHighException::GradeTooHighException(const char* error, const char* name) {
-	std::string test = std::string(error) + std::string(name);
-	_error = strdup(test.c_str());
-}
-
-AForm::GradeTooHighException::GradeTooHighException::~GradeTooHighException() throw() {
-}
-
-AForm::GradeTooLowException::GradeTooLowException(const char *error)
+AForm::GradeTooHighException::GradeTooHighException(std::string error) : _error(error)
 {
 	std::cout << error << std::endl;
 }
+
+AForm::GradeTooLowException::GradeTooLowException(std::string error) : _error(error)
+{
+	std::cout << error << std::endl;
+}
+AForm::GradeTooHighException::GradeTooHighException::~GradeTooHighException() throw() {}
+
+AForm::GradeTooLowException::GradeTooLowException::~GradeTooLowException() throw() {}

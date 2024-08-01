@@ -13,6 +13,7 @@ public:
 	ShrubberyCreationForm &operator=(ShrubberyCreationForm const &src);
 	virtual void execute(Bureaucrat const &executor) const;
 	virtual void execution(Bureaucrat const &executor) const;
+	virtual void beSigned(Bureaucrat &bureaucrat);
 
 };
 

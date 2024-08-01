@@ -25,31 +25,34 @@ public:
 	int getGts() const;
 	int getGte() const;
 	std::string getReason() const;
-	void formGradeChecker(const int gts, const int gte, std::string target);
-	void beSigned(Bureaucrat &bureaucrat);
+	void formGradeChecker(const int gts, const int gte, std::string name);
+	virtual void beSigned(Bureaucrat &bureaucrat);
 	virtual void execute(Bureaucrat const &executor) const = 0;
 	virtual void execution(Bureaucrat const &executor) const = 0;
-	bool form_err;
+	virtual bool signProcess(bool iss); // iss = is_signed
+	virtual std::string reasonModifier(std::string reason);
+	bool form_err; // mettre en private
 
 	class GradeTooHighException : public std::exception {
 	public:
 		virtual ~GradeTooHighException() throw();
-		GradeTooHighException(const char* error, const char* target);
+		GradeTooHighException(std::string error);
 		virtual const char* what() const throw() {
-			return _error;
+			return _error.c_str();
 		}
 	private:
-		const char* _error;
+		std::string _error;
 	};
 
 	class GradeTooLowException : public std::exception {
 	public:
-		GradeTooLowException(const char *error);
+		virtual ~GradeTooLowException() throw();
+		GradeTooLowException(std::string error);
 		virtual const char* what() const throw() {
-			return this->_error;
+			return _error.c_str();
 		}
 	private:
-		const char* _error;
+		std::string _error;
 	};
 
 protected:

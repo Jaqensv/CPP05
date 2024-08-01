@@ -6,22 +6,15 @@
 /*   By: mde-lang <mde-lang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 14:32:45 by mde-lang          #+#    #+#             */
-/*   Updated: 2024/07/30 19:06:05 by mde-lang         ###   ########.fr       */
+/*   Updated: 2024/08/01 17:24:41 by mde-lang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ShrubberyCreationForm.hpp"
 
-ShrubberyCreationForm::ShrubberyCreationForm() : AForm("ShrubberyCreationForm", 145, 0)
+ShrubberyCreationForm::ShrubberyCreationForm() : AForm("ShrubberyCreationForm", 145, 151)
 {
-	try
-	{
-		AForm::formGradeChecker(this->getGts(), this->getGte(), this->_target);
-	}
-	catch (std::exception &e)
-	{
-		std::cout << e.what() << std::endl;
-	}
+	AForm::formGradeChecker(this->getGts(), this->getGte(), this->getName());
 }
 
 ShrubberyCreationForm::~ShrubberyCreationForm() {}
@@ -72,7 +65,28 @@ void ShrubberyCreationForm::execution(Bureaucrat const &executor) const
 		infile.close();
 	}
 	else
-		throw GradeTooLowException("Bureaucrate grade is too low to execute Shrubbery");
+		throw GradeTooLowException("Bureaucrate grade is too low to execute the ShrubberyCreationForm");
 		
 }
 
+void ShrubberyCreationForm::beSigned(Bureaucrat &bureaucrat)
+{
+	try
+	{
+		if (bureaucrat.getGrade() <= this->getGts())
+			this->signProcess(true);
+		else
+		{
+			if (this->form_err == false)
+			{
+				this->reasonModifier("his grade is too low.");
+				throw GradeTooLowException("The bureaucrat doesn't have the right grade to sign the Aform.");
+			}
+		}
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << e.what() << std::endl;
+	}
+	bureaucrat.signForm(*this);
+}
