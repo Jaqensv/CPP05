@@ -26,12 +26,23 @@ public:
 	int getGte() const;
 	std::string getReason() const;
 	void formGradeChecker(const int gts, const int gte, std::string name);
-	virtual void beSigned(Bureaucrat &bureaucrat);
-	virtual void execute(Bureaucrat const &executor) const = 0;
+	void beSigned(Bureaucrat &bureaucrat);
+	virtual void execute(Bureaucrat const &executor) const;
 	virtual void execution(Bureaucrat const &executor) const = 0;
 	virtual bool signProcess(bool iss); // iss = is_signed
 	virtual std::string reasonModifier(std::string reason);
 	bool form_err; // mettre en private
+
+	class WrongGradeException : public std::exception {
+	public:
+		virtual ~WrongGradeException() throw();
+		WrongGradeException(std::string error);
+		virtual const char* what() const throw() {
+			return _error.c_str();
+		}
+	private:
+		std::string _error;
+	};
 
 	class GradeTooHighException : public std::exception {
 	public:
@@ -63,6 +74,7 @@ private:
 
 	const std::string 	_name;
 	bool				_signed;
+	bool				_signable;
 	const int			_gts; // grade to sign
 	const int			_gte; // grade to execute
 	std::string			_reason;

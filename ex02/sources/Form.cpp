@@ -22,20 +22,8 @@ AForm::~AForm() {}
 AForm::AForm(const std::string name, const int gts, const int gte) : _name(name), _gts(gts), _gte(gte)
 {
 	this->_signed = false;
-	try
-	{
-		formGradeChecker(gts, gte, name);
-	}
-	catch (const GradeTooHighException &e)
-	{
-		std::cout << "test 1" << std::endl;
-		_reason = name + " has a too high grade.";
-	}
-	catch (const GradeTooLowException &e)
-	{
-		std::cout << "test 2" << std::endl;
-		_reason = name + " has a too low grade.";
-	}
+	this->_signable = true;
+	formGradeChecker(gts, gte, name);
 }
 
 AForm::AForm(AForm const &src) : _name(src._name), _signed(src._signed), _gts(src._gts), _gte(src._gte), _reason(src._reason)
@@ -95,35 +83,44 @@ void AForm::formGradeChecker(const int gts, const int gte, std::string name)
 	if ((gts < 1 || gte < 1) && this->form_err == false)
 	{
 		this->form_err = true;
+		this->_signable = false;
+		_reason = name + " has a too high grade.";
 		throw GradeTooHighException((std::string)name + " has a too high grade");
 	}
 	else if ((gts > 150 || gte > 150) && this->form_err == false)
 	{
+		this->_signable = false;
+		_reason = name + " has a too low grade.";
 		this->form_err = true;
 		throw GradeTooLowException((std::string)name + " has a too low grade");
 	}
 }
-
 void AForm::beSigned(Bureaucrat &bureaucrat)
 {
-	try
+	if (this->_signable == true)
 	{
-		if (bureaucrat.getGrade() <= this->_gts)
-			this->_signed = true;
+		if (bureaucrat.getGrade() <= this->getGts())
+			this->signProcess(true);
 		else
 		{
 			if (this->form_err == false)
 			{
-				this->_reason = "his grade is too low.";
-				throw GradeTooLowException("The bureaucrat doesn't have the right grade to sign the Aform.");
+				this->reasonModifier("his grade is too low.");
+				throw GradeTooLowException((std::string)"The bureaucrat does not have the right grade to sign the " + this->getName());
 			}
 		}
 	}
-	catch (const std::exception &e)
-	{
-		std::cerr << e.what() << std::endl;
-	}
+	else
+		throw WrongGradeException((std::string)this->_name + " cannot be signed because there is a problem in the form");
 	bureaucrat.signForm(*this);
+}
+
+void AForm::execute(Bureaucrat const &executor) const
+{
+	if (this->getSigned() == true)
+		execution(executor);
+	else
+		throw WrongGradeException((std::string)this->getName() + " cannot be executed because it is not signed");
 }
 
 std::ostream &operator<<(std::ostream &o, AForm const &rhs) 
@@ -137,15 +134,14 @@ std::ostream &operator<<(std::ostream &o, AForm const &rhs)
 	return (o << "Form " << rhs.getName() << ", with a needed grade to sign of " << rhs.getGts() << " and a needed grade to execute of " << rhs.getGte() << " is " << is_signed << "." << std::endl);
 }
 
-AForm::GradeTooHighException::GradeTooHighException(std::string error) : _error(error)
-{
-	std::cout << error << std::endl;
-}
+AForm::WrongGradeException::WrongGradeException(std::string error) : _error(error) {}
 
-AForm::GradeTooLowException::GradeTooLowException(std::string error) : _error(error)
-{
-	std::cout << error << std::endl;
-}
+AForm::GradeTooHighException::GradeTooHighException(std::string error) : _error(error) {}
+
+AForm::GradeTooLowException::GradeTooLowException(std::string error) : _error(error) {}
+
+AForm::WrongGradeException::WrongGradeException::~WrongGradeException() throw() {}
+
 AForm::GradeTooHighException::GradeTooHighException::~GradeTooHighException() throw() {}
 
 AForm::GradeTooLowException::GradeTooLowException::~GradeTooLowException() throw() {}

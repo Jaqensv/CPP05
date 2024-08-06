@@ -6,7 +6,7 @@
 /*   By: mde-lang <mde-lang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:11:42 by mde-lang          #+#    #+#             */
-/*   Updated: 2024/08/01 17:22:56 by mde-lang         ###   ########.fr       */
+/*   Updated: 2024/08/06 19:28:22 by mde-lang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@ int main()
 {
 	try
 	{
-		std::cout << std::endl;
-
-		Bureaucrat crat("George Abitbol", 150);
+		Bureaucrat crat("George Abitbol", 145);
 		Bureaucrat cratos(crat);
 		AForm* shrub = new ShrubberyCreationForm();
 		//AForm f("A38", 2, 2);
@@ -29,14 +27,14 @@ int main()
 		//shrub.beSigned(crat);
 		//std::cout << crat << std::endl;
 		//std::cout << f << std::endl;
-		//std::cout << cratos << std::endl;
+		std::cout << cratos << std::endl;
 		//std::cout << shrub->getName() << std::endl;
-		//shrub->execute(cratos);
+		shrub->beSigned(cratos);
+		shrub->execute(cratos);
 		delete shrub;
 	}
 	catch (std::exception &e)
 	{
-		std::cout << "test" << std::endl;
 		std::cout << e.what() << std::endl;
 	}
 

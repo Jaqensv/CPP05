@@ -6,7 +6,7 @@
 /*   By: mde-lang <mde-lang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:44:59 by mde-lang          #+#    #+#             */
-/*   Updated: 2024/07/29 16:36:11 by mde-lang         ###   ########.fr       */
+/*   Updated: 2024/08/06 18:53:08 by mde-lang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,32 +56,19 @@ void Bureaucrat::gradeChecker(int grade)
 
 void Bureaucrat::upGrade()
 {
-	try
-	{
-		if (this->_grade == 1)
-			throw GradeTooHighException("The bureaucrat's grade is too high to be increased");
+
+	if (this->_grade == 1)
+		throw GradeTooHighException("The bureaucrat's grade is too high to be increased");
+	else
 		this->_grade -= 1;
-	}
-	catch (const std::exception &e)
-	{
-		std::cerr << e.what() << std::endl;
-		std::exit(EXIT_FAILURE);
-	}
 }
 
 void Bureaucrat::downGrade()
 {
-	try
-	{
-		if (this->_grade == 150)
-			throw GradeTooLowException("The bureaucrat's grade is too high to be reduced");
+	if (this->_grade == 150)
+		throw GradeTooLowException("The bureaucrat's grade is too high to be reduced");
+	else
 		this->_grade += 1;
-	}
-	catch (const std::exception &e)
-	{
-		std::cerr << e.what() << std::endl;
-		std::exit(EXIT_FAILURE);
-	}
 }
 
 const std::string Bureaucrat::getName() const
@@ -104,7 +91,7 @@ void Bureaucrat::signForm(AForm &form) const
 	if (form.getSigned() == true)
 		std::cout << this->_name << " signed " << form.getName() << std::endl;
 	else
-		std::cout << this->_name << " couldn't sign " << form.getName() << " form, because " << form.getReason() << std::endl;
+		std::cout << this->_name << " couldn't sign " << form.getName() << ", because " << form.getReason() << std::endl;
 }
 
 Bureaucrat::GradeTooHighException::GradeTooHighException(const char *error)

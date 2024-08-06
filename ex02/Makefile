@@ -12,12 +12,17 @@ CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 all: ${NAME}
 
 ${NAME}: ${OBJECTS}
-	$(CXX) $(CXXFLAGS) -g3 -o ${NAME} ${OBJECTS}
+	@$(CXX) $(CXXFLAGS) -g3 -o ${NAME} ${OBJECTS}
+
+%.o: %.cpp
+	@$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f ${OBJECTS}
+	@rm -f ${OBJECTS}
 	
 fclean: clean
-	rm -f ${NAME}
+	@rm -f ${NAME}
 
 re: fclean all
+
+.PHONY: all clean fclean re
