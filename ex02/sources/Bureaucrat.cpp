@@ -6,7 +6,7 @@
 /*   By: mde-lang <mde-lang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:44:59 by mde-lang          #+#    #+#             */
-/*   Updated: 2024/08/06 18:53:08 by mde-lang         ###   ########.fr       */
+/*   Updated: 2024/08/07 14:02:09 by mde-lang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,28 @@ Bureaucrat &Bureaucrat::operator=(Bureaucrat const &rhs)
 	return *this;
 }
 
+void Bureaucrat::gradeModifier(int modifier)
+{
+	int i = 0;
+	try
+	{
+		if (modifier < 0)
+		{
+			while (i++ < (modifier * -1))
+				downGrade();
+		}
+		else
+		{
+			while (i++ < modifier)
+				upGrade();
+		}
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << e.what() << std::endl;
+	}
+}
+
 void Bureaucrat::gradeChecker(int grade)
 {
 	if (grade < 1)
@@ -56,7 +78,6 @@ void Bureaucrat::gradeChecker(int grade)
 
 void Bureaucrat::upGrade()
 {
-
 	if (this->_grade == 1)
 		throw GradeTooHighException("The bureaucrat's grade is too high to be increased");
 	else
@@ -66,7 +87,7 @@ void Bureaucrat::upGrade()
 void Bureaucrat::downGrade()
 {
 	if (this->_grade == 150)
-		throw GradeTooLowException("The bureaucrat's grade is too high to be reduced");
+		throw GradeTooLowException("The bureaucrat's grade is too low to be reduced");
 	else
 		this->_grade += 1;
 }

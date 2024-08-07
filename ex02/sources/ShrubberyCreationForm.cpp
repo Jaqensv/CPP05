@@ -6,7 +6,7 @@
 /*   By: mde-lang <mde-lang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 14:32:45 by mde-lang          #+#    #+#             */
-/*   Updated: 2024/08/06 19:27:07 by mde-lang         ###   ########.fr       */
+/*   Updated: 2024/08/07 12:26:15 by mde-lang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,5 @@ void ShrubberyCreationForm::execution(Bureaucrat const &executor) const
 		infile.close();
 	}
 	else
-		throw GradeTooLowException("Bureaucrate grade is too low to execute the ShrubberyCreationForm");
+		throw GradeTooLowException((std::string)executor.getName() + "'s grade is too low to execute the ShrubberyCreationForm");
 }

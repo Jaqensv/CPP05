@@ -6,7 +6,7 @@
 /*   By: mde-lang <mde-lang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 17:54:39 by mde-lang          #+#    #+#             */
-/*   Updated: 2024/07/29 16:38:17 by mde-lang         ###   ########.fr       */
+/*   Updated: 2024/08/07 14:55:48 by mde-lang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,11 @@ Form::Form() : _gts(150), _gte(150)
 
 Form::~Form() {}
 
-Form::Form(std::string name, const int gts, const int gte) : _name(name), _gts(gts), _gte(gte)
+Form::Form(const std::string name, const int gts, const int gte) : _name(name), _gts(gts), _gte(gte)
 {
 	this->_signed = false;
-	try
-	{
-		formGradeChecker(this->_gts, this->_gte);
-	}
-	catch (const GradeTooHighException &e)
-	{
-		std::cerr << e.what() << std::endl;
-		_reason = "there is an error in the form.";
-	}
-	catch (const GradeTooLowException &e)
-	{
-		std::cerr << e.what() << std::endl;
-		_reason = "there is an error in the form.";
-	}
+	this->_signable = true;
+	formGradeChecker(gts, gte, name);
 }
 
 Form::Form(Form const &src) : _name(src._name), _signed(src._signed), _gts(src._gts), _gte(src._gte), _reason(src._reason)
@@ -63,6 +51,11 @@ bool Form::getSigned() const
 	return this->_signed;
 }
 
+bool Form::getSignable() const
+{
+	return this->_signable;
+}
+
 int Form::getGts() const
 {
 	return this->_gts;
@@ -78,17 +71,33 @@ std::string Form::getReason() const
 	return this->_reason;
 }
 
-void Form::formGradeChecker(int gts, int gte)
+bool Form::signProcess(bool iss)
 {
-	if (gts < 1 || gte < 1)
+	this->_signed = iss;
+	return this->_signed;
+}
+
+std::string Form::reasonModifier(std::string reason)
+{
+	this->_reason = reason;
+	return this->_reason;
+}
+
+void Form::formGradeChecker(const int gts, const int gte, std::string name)
+{
+	if ((gts < 1 || gte < 1) && this->_form_err == false)
 	{
-		this->form_err = true;
-		throw GradeTooHighException("There is an error in the form.");
+		this->_form_err = true;
+		this->_signable = false;
+		_reason = name + " has a too high grade.";
+		throw GradeTooHighException((std::string)name + " has a too high grade");
 	}
-	else if (gts > 150 || gte > 150)
+	else if ((gts > 150 || gte > 150) && this->_form_err == false)
 	{
-		this->form_err = true;
-		throw GradeTooLowException("There is an error in the form.");
+		this->_signable = false;
+		_reason = name + " has a too low grade.";
+		this->_form_err = true;
+		throw GradeTooLowException((std::string)name + " has a too low grade");
 	}
 }
 
@@ -96,20 +105,25 @@ void Form::beSigned(Bureaucrat &bureaucrat)
 {
 	try
 	{
-		if (bureaucrat.getGrade() <= this->_gts)
-			this->_signed = true;
-		else
+		if (this->_signable == true)
 		{
-			if (this->form_err == false)
+			if (bureaucrat.getGrade() <= this->getGts())
+				this->signProcess(true);
+			else
 			{
-				this->_reason = "his grade is too low.";
-				throw GradeTooLowException("The bureaucrat doesn't have the right grade to sign the form.");
+				if (this->_form_err == false)
+				{
+					this->reasonModifier("his grade is too low.");
+					throw GradeTooLowException((std::string)"The bureaucrat does not have the right grade to sign the " + this->getName());
+				}
 			}
 		}
+		else
+			throw WrongGradeException((std::string)this->_name + " cannot be signed because there is a problem in the form");
 	}
 	catch (const std::exception &e)
 	{
-		std::cerr << e.what() << std::endl;
+		std::cout << e.what() << std::endl;
 	}
 	bureaucrat.signForm(*this);
 }
@@ -125,12 +139,14 @@ std::ostream &operator<<(std::ostream &o, Form const &rhs)
 	return (o << "Form " << rhs.getName() << ", with a needed grade to sign of " << rhs.getGts() << " and a needed grade to execute of " << rhs.getGte() << " is " << is_signed << "." << std::endl);
 }
 
-Form::GradeTooHighException::GradeTooHighException(const char *error)
-{
-	std::cout << error << std::endl;
-}
+Form::WrongGradeException::WrongGradeException(std::string error) : _error(error) {}
 
-Form::GradeTooLowException::GradeTooLowException(const char *error)
-{
-	std::cout << error << std::endl;
-}
+Form::GradeTooHighException::GradeTooHighException(std::string error) : _error(error) {}
+
+Form::GradeTooLowException::GradeTooLowException(std::string error) : _error(error) {}
+
+Form::WrongGradeException::WrongGradeException::~WrongGradeException() throw() {}
+
+Form::GradeTooHighException::GradeTooHighException::~GradeTooHighException() throw() {}
+
+Form::GradeTooLowException::GradeTooLowException::~GradeTooLowException() throw() {}

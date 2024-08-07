@@ -17,8 +17,9 @@ public:
 	Bureaucrat(const std::string name, int grade);
 	Bureaucrat(Bureaucrat const &src);
 	Bureaucrat &operator=(Bureaucrat const &rhs);
-	void gradeChecker(int grade);
 	const std::string getName() const;
+	void gradeChecker(int grade);
+	void gradeModifier(int modifier);
 	int	getGrade() const;
 	void upGrade();
 	void downGrade();

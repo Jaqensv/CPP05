@@ -6,7 +6,7 @@
 /*   By: mde-lang <mde-lang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:11:42 by mde-lang          #+#    #+#             */
-/*   Updated: 2024/08/06 19:28:22 by mde-lang         ###   ########.fr       */
+/*   Updated: 2024/08/07 15:17:58 by mde-lang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,13 @@ int main()
 {
 	try
 	{
-		Bureaucrat crat("George Abitbol", 145);
+		Bureaucrat crat("George Abitbol", 10);
 		Bureaucrat cratos(crat);
 		AForm* shrub = new ShrubberyCreationForm();
 		//AForm f("A38", 2, 2);
-		//crat.downGrade();
-		//crat.upGrade();
+		//cratos.gradeModifier(-3);
+		cratos.gradeModifier(+49);
+		//std::cout << crat.getGrade() << std::endl;
 		//shrub.beSigned(crat);
 		//std::cout << crat << std::endl;
 		//std::cout << f << std::endl;

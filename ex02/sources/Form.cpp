@@ -51,6 +51,11 @@ bool AForm::getSigned() const
 	return this->_signed;
 }
 
+bool AForm::getSignable() const
+{
+	return this->_signable;
+}
+
 bool AForm::signProcess(bool iss)
 {
 	this->_signed = iss;
@@ -80,38 +85,45 @@ std::string AForm::getReason() const
 
 void AForm::formGradeChecker(const int gts, const int gte, std::string name)
 {
-	if ((gts < 1 || gte < 1) && this->form_err == false)
+	if ((gts < 1 || gte < 1) && this->_form_err == false)
 	{
-		this->form_err = true;
+		this->_form_err = true;
 		this->_signable = false;
 		_reason = name + " has a too high grade.";
 		throw GradeTooHighException((std::string)name + " has a too high grade");
 	}
-	else if ((gts > 150 || gte > 150) && this->form_err == false)
+	else if ((gts > 150 || gte > 150) && this->_form_err == false)
 	{
 		this->_signable = false;
 		_reason = name + " has a too low grade.";
-		this->form_err = true;
+		this->_form_err = true;
 		throw GradeTooLowException((std::string)name + " has a too low grade");
 	}
 }
 void AForm::beSigned(Bureaucrat &bureaucrat)
 {
-	if (this->_signable == true)
+	try
 	{
-		if (bureaucrat.getGrade() <= this->getGts())
-			this->signProcess(true);
-		else
+		if (this->_signable == true)
 		{
-			if (this->form_err == false)
+			if (bureaucrat.getGrade() <= this->getGts())
+				this->signProcess(true);
+			else
 			{
-				this->reasonModifier("his grade is too low.");
-				throw GradeTooLowException((std::string)"The bureaucrat does not have the right grade to sign the " + this->getName());
+				if (this->_form_err == false)
+				{
+					this->reasonModifier("his grade is too low.");
+					throw GradeTooLowException((std::string)"The bureaucrat does not have the right grade to sign the " + this->getName());
+				}
 			}
 		}
+		else
+			throw WrongGradeException((std::string)this->_name + " cannot be signed because there is a problem in the form");
 	}
-	else
-		throw WrongGradeException((std::string)this->_name + " cannot be signed because there is a problem in the form");
+	catch (const std::exception &e)
+	{
+		std::cout << e.what() << std::endl;
+	}
 	bureaucrat.signForm(*this);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mde-lang <mde-lang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:44:59 by mde-lang          #+#    #+#             */
-/*   Updated: 2024/07/29 16:37:42 by mde-lang         ###   ########.fr       */
+/*   Updated: 2024/08/07 14:56:28 by mde-lang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,28 @@ Bureaucrat &Bureaucrat::operator=(Bureaucrat const &rhs)
 	return *this;
 }
 
+void Bureaucrat::gradeModifier(int modifier)
+{
+	int i = 0;
+	try
+	{
+		if (modifier < 0)
+		{
+			while (i++ < (modifier * -1))
+				downGrade();
+		}
+		else
+		{
+			while (i++ < modifier)
+				upGrade();
+		}
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << e.what() << std::endl;
+	}
+}
+
 void Bureaucrat::gradeChecker(int grade)
 {
 	if (grade < 1)
@@ -56,32 +78,18 @@ void Bureaucrat::gradeChecker(int grade)
 
 void Bureaucrat::upGrade()
 {
-	try
-	{
-		if (this->_grade == 1)
-			throw GradeTooHighException("The bureaucrat's grade is too high to be increased");
+	if (this->_grade == 1)
+		throw GradeTooHighException("The bureaucrat's grade is too high to be increased");
+	else
 		this->_grade -= 1;
-	}
-	catch (const std::exception &e)
-	{
-		std::cerr << e.what() << std::endl;
-		std::exit(EXIT_FAILURE);
-	}
 }
 
 void Bureaucrat::downGrade()
 {
-	try
-	{
-		if (this->_grade == 150)
-			throw GradeTooLowException("The bureaucrat's grade is too high to be reduced");
+	if (this->_grade == 150)
+		throw GradeTooLowException("The bureaucrat's grade is too low to be reduced");
+	else
 		this->_grade += 1;
-	}
-	catch (const std::exception &e)
-	{
-		std::cerr << e.what() << std::endl;
-		std::exit(EXIT_FAILURE);
-	}
 }
 
 const std::string Bureaucrat::getName() const

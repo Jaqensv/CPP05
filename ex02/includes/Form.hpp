@@ -22,6 +22,7 @@ public:
 	AForm &operator=(AForm const &rhs);
 	const std::string getName() const;
 	bool getSigned() const;
+	bool getSignable() const;
 	int getGts() const;
 	int getGte() const;
 	std::string getReason() const;
@@ -31,7 +32,6 @@ public:
 	virtual void execution(Bureaucrat const &executor) const = 0;
 	virtual bool signProcess(bool iss); // iss = is_signed
 	virtual std::string reasonModifier(std::string reason);
-	bool form_err; // mettre en private
 
 	class WrongGradeException : public std::exception {
 	public:
@@ -78,6 +78,7 @@ private:
 	const int			_gts; // grade to sign
 	const int			_gte; // grade to execute
 	std::string			_reason;
+	bool 				_form_err;
 
 
 };
