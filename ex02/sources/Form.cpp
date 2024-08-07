@@ -23,7 +23,7 @@ AForm::AForm(const std::string name, const int gts, const int gte) : _name(name)
 {
 	this->_signed = false;
 	this->_signable = true;
-	formGradeChecker(gts, gte, name);
+	formGradeChecker(gts, gte);
 }
 
 AForm::AForm(AForm const &src) : _name(src._name), _signed(src._signed), _gts(src._gts), _gte(src._gte), _reason(src._reason)
@@ -83,21 +83,26 @@ std::string AForm::getReason() const
 	return this->_reason;
 }
 
-void AForm::formGradeChecker(const int gts, const int gte, std::string name)
+std::string AForm::getTarget() const
+{
+	return this->_target;
+}
+
+void AForm::formGradeChecker(const int gts, const int gte)
 {
 	if ((gts < 1 || gte < 1) && this->_form_err == false)
 	{
 		this->_form_err = true;
 		this->_signable = false;
-		_reason = name + " has a too high grade.";
-		throw GradeTooHighException((std::string)name + " has a too high grade");
+		_reason = this->_target + " has a too high grade.";
+		throw GradeTooHighException((std::string)this->_target + " has a too high grade");
 	}
 	else if ((gts > 150 || gte > 150) && this->_form_err == false)
 	{
-		this->_signable = false;
-		_reason = name + " has a too low grade.";
 		this->_form_err = true;
-		throw GradeTooLowException((std::string)name + " has a too low grade");
+		this->_signable = false;
+		_reason = this->_target + " has a too low grade.";
+		throw GradeTooLowException((std::string)this->_target + " has a too low grade");
 	}
 }
 void AForm::beSigned(Bureaucrat &bureaucrat)

@@ -6,13 +6,21 @@
 /*   By: mde-lang <mde-lang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:44:13 by mde-lang          #+#    #+#             */
-/*   Updated: 2024/07/30 18:02:59 by mde-lang         ###   ########.fr       */
+/*   Updated: 2024/08/07 17:57:20 by mde-lang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/RobotomyRequestForm.hpp"
 
-RobotomyRequestForm::RobotomyRequestForm() : AForm("RobotomyRequestForm", 72, 45) {}
+RobotomyRequestForm::RobotomyRequestForm() : AForm("RobotomyRequestForm", 72, 45)
+{
+	AForm::formGradeChecker(this->getGts(), this->getGte());
+}
+
+RobotomyRequestForm::RobotomyRequestForm(std::string target) : AForm("RobotomyRequestForm", 72, 45)
+{
+	this->_target = target;
+}
 
 RobotomyRequestForm::~RobotomyRequestForm() {}
 
@@ -28,24 +36,16 @@ RobotomyRequestForm &RobotomyRequestForm::operator=(RobotomyRequestForm const &r
 	return *this;
 }
 
-// void RobotomyRequestForm::execute(Bureaucrat const &executor) const
-// {
-// 	try
-// 	{
-// 		execution(executor);	
-// 	}
-// 	catch (std::exception &e)
-// 	{
-// 		std::cout << e.what() << std::endl;
-// 	}
-// }
-
-// void RobotomyRequestForm::execution(Bureaucrat const &executor) const
-// {
-// 	if (executor.getGrade() <= this->getGte())
-		
-// 	else
-// 		throw GradeTooLowException("Bureaucrat's grade is too low to execute Robotomy");
-	
-	
-// }
+void RobotomyRequestForm::execution(Bureaucrat const &executor) const
+{
+	srand(time(0)); 
+	if (executor.getGrade() <= this->getGte())
+	{
+		if (rand() % 2 == 0)
+			std::cout << "*Drilling noises* " << this->_target << " has been robotomized successfully" << std::endl;
+		else
+			std::cout << "*Drilling noises* " << "The robotomy failed" << std::endl;
+	}
+	else
+		throw GradeTooLowException((std::string)executor.getName() + "'s grade is too low to execute the RobotomyRequestForm");
+}

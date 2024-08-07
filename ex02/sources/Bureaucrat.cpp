@@ -6,13 +6,13 @@
 /*   By: mde-lang <mde-lang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:44:59 by mde-lang          #+#    #+#             */
-/*   Updated: 2024/08/07 14:02:09 by mde-lang         ###   ########.fr       */
+/*   Updated: 2024/08/07 18:06:04 by mde-lang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Bureaucrat.hpp"
 
-Bureaucrat::Bureaucrat() : _name("unknown"), _grade(150) {}
+Bureaucrat::Bureaucrat() : _name("Unknown"), _grade(150) {}
 
 Bureaucrat::~Bureaucrat() {}
 
@@ -110,9 +110,9 @@ std::ostream &operator<<(std::ostream &o, Bureaucrat const &rhs)
 void Bureaucrat::signForm(AForm &form) const
 {
 	if (form.getSigned() == true)
-		std::cout << this->_name << " signed " << form.getName() << std::endl;
+		std::cout << form.getTarget() << " signed " << form.getName() << std::endl;
 	else
-		std::cout << this->_name << " couldn't sign " << form.getName() << ", because " << form.getReason() << std::endl;
+		std::cout << form.getTarget() << " couldn't sign " << form.getName() << ", because " << form.getReason() << std::endl;
 }
 
 Bureaucrat::GradeTooHighException::GradeTooHighException(const char *error)

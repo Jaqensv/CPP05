@@ -26,7 +26,8 @@ public:
 	int getGts() const;
 	int getGte() const;
 	std::string getReason() const;
-	void formGradeChecker(const int gts, const int gte, std::string name);
+	std::string getTarget() const;
+	void formGradeChecker(const int gts, const int gte);
 	void beSigned(Bureaucrat &bureaucrat);
 	virtual void execute(Bureaucrat const &executor) const;
 	virtual void execution(Bureaucrat const &executor) const = 0;

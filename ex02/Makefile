@@ -3,6 +3,8 @@ SOURCES = 	sources/main.cpp \
 			sources/Bureaucrat.cpp \
 			sources/Form.cpp \
 			sources/ShrubberyCreationForm.cpp \
+			sources/RobotomyRequestForm.cpp \
+			sources/PresidentialPardonForm.cpp \
 
 OBJECTS = $(SOURCES:.cpp=.o)
 
