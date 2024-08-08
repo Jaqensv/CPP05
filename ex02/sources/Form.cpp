@@ -132,12 +132,24 @@ void AForm::beSigned(Bureaucrat &bureaucrat)
 	bureaucrat.signForm(*this);
 }
 
-void AForm::execute(Bureaucrat const &executor) const
+int AForm::execute(Bureaucrat const &executor) const
 {
-	if (this->getSigned() == true)
-		execution(executor);
-	else
-		throw WrongGradeException((std::string)this->getName() + " cannot be executed because it is not signed");
+	try
+	{
+		if (this->getSigned() == true)
+			execution(executor);
+		else
+		{
+			std::cout << (std::string)this->getName() + " cannot be executed because it is not signed" << std::endl;
+			return 1;
+		}
+	}
+	catch (const std::exception &e)
+	{
+		std::cout << e.what() << std::endl;
+		return 1;
+	}
+	return 0;
 }
 
 std::ostream &operator<<(std::ostream &o, AForm const &rhs) 
@@ -149,6 +161,19 @@ std::ostream &operator<<(std::ostream &o, AForm const &rhs)
 	else
 		is_signed = "unsigned";
 	return (o << "Form " << rhs.getName() << ", with a needed grade to sign of " << rhs.getGts() << " and a needed grade to execute of " << rhs.getGte() << " is " << is_signed << "." << std::endl);
+}
+
+void AForm::monitor(Bureaucrat &executor, AForm &form) const
+{
+	try
+	{
+		form.beSigned(executor);
+		form.execute(executor);
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << e.what() << std::endl;
+	}
 }
 
 AForm::WrongGradeException::WrongGradeException(std::string error) : _error(error) {}

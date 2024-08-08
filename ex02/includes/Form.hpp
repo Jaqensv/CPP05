@@ -29,10 +29,11 @@ public:
 	std::string getTarget() const;
 	void formGradeChecker(const int gts, const int gte);
 	void beSigned(Bureaucrat &bureaucrat);
-	virtual void execute(Bureaucrat const &executor) const;
+	virtual int execute(Bureaucrat const &executor) const;
 	virtual void execution(Bureaucrat const &executor) const = 0;
 	virtual bool signProcess(bool iss); // iss = is_signed
 	virtual std::string reasonModifier(std::string reason);
+	virtual void monitor(Bureaucrat &executor, AForm &form) const;
 
 	class WrongGradeException : public std::exception {
 	public:

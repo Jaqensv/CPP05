@@ -6,7 +6,7 @@
 /*   By: mde-lang <mde-lang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:44:59 by mde-lang          #+#    #+#             */
-/*   Updated: 2024/08/07 18:06:04 by mde-lang         ###   ########.fr       */
+/*   Updated: 2024/08/08 22:07:46 by mde-lang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,15 +112,19 @@ void Bureaucrat::signForm(AForm &form) const
 	if (form.getSigned() == true)
 		std::cout << form.getTarget() << " signed " << form.getName() << std::endl;
 	else
-		std::cout << form.getTarget() << " couldn't sign " << form.getName() << ", because " << form.getReason() << std::endl;
+		std::cout << form.getTarget() << " couldn't sign " << form.getName() << std::endl;
 }
 
-Bureaucrat::GradeTooHighException::GradeTooHighException(const char *error)
+void Bureaucrat::executeForm(AForm const & form)
 {
-	std::cout << error << std::endl;
+	if (form.execute(*this) == 0)
+		std::cout << form.getTarget() + " executed " + form.getName() << std::endl;
 }
 
-Bureaucrat::GradeTooLowException::GradeTooLowException(const char *error)
-{
-	std::cout << error << std::endl;
-}
+Bureaucrat::GradeTooHighException::GradeTooHighException(std::string error) : _error(error) {}
+
+Bureaucrat::GradeTooLowException::GradeTooLowException(std::string error) : _error(error) {}
+
+Bureaucrat::GradeTooHighException::GradeTooHighException::~GradeTooHighException() throw() {}
+
+Bureaucrat::GradeTooLowException::GradeTooLowException::~GradeTooLowException() throw() {}

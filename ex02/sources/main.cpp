@@ -6,7 +6,7 @@
 /*   By: mde-lang <mde-lang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:11:42 by mde-lang          #+#    #+#             */
-/*   Updated: 2024/08/07 18:07:43 by mde-lang         ###   ########.fr       */
+/*   Updated: 2024/08/08 22:27:02 by mde-lang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,32 @@
 #include "../includes/RobotomyRequestForm.hpp"
 #include "../includes/PresidentialPardonForm.hpp"
 
-int main()
+int main(int argc, char **argv)
 {
+	if (argc != 4)
+	{
+		std::cout << "NAME, GRADE, GRADE MODIFIER" << std::endl;
+		return 0;
+	}
+	const std::string name = argv[1];
+	int grade = atoi(argv[2]);
+	int grade_modifier = atoi(argv[3]);
 	try
 	{
-		Bureaucrat crat("George Abitbol", 140);
-		Bureaucrat cratos(crat);
-		AForm* shrub = new ShrubberyCreationForm("Igor");
-		AForm* robot = new RobotomyRequestForm("Bob");
-		AForm* guilty = new PresidentialPardonForm("Greg");
-		cratos.gradeModifier(+50);
-		//std::cout << cratos << std::endl;
-		shrub->beSigned(cratos);
-		shrub->execute(cratos);
-		robot->beSigned(cratos);
-		robot->execute(cratos);
-		guilty->beSigned(cratos);
-		guilty->execute(cratos);
+		Bureaucrat crat(name, grade);
+		AForm* shrub = new ShrubberyCreationForm(name);
+		AForm* robot = new RobotomyRequestForm(name);
+		AForm* guilty = new PresidentialPardonForm(name);
+		crat.gradeModifier(grade_modifier);
+		std::cout << crat << std::endl;
+		shrub->beSigned(crat);
+		crat.executeForm(*shrub);
+		std::cout << std::endl;
+		robot->beSigned(crat);
+		crat.executeForm(*robot);
+		std::cout << std::endl;
+		guilty->beSigned(crat);
+		crat.executeForm(*guilty);
 		delete shrub;
 		delete robot;
 		delete guilty;

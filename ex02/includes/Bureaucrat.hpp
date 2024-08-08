@@ -24,25 +24,28 @@ public:
 	void downGrade();
 	int	getGrade() const;
 	void signForm(AForm &form) const;
+	void executeForm(AForm const & form);
 
 	class GradeTooHighException : public std::exception {
 	public:
-		GradeTooHighException(const char *error);
+		virtual ~GradeTooHighException() throw();
+		GradeTooHighException(std::string error);
 		virtual const char* what() const throw() {
-			return this->_error;
+			return _error.c_str();
 		}
 	private:
-		const char *_error;
+		std::string _error;
 	};
 
 	class GradeTooLowException : public std::exception {
 	public:
-		GradeTooLowException(const char *error);
+		virtual ~GradeTooLowException() throw();
+		GradeTooLowException(std::string error);
 		virtual const char* what() const throw() {
-			return this->_error;
+			return _error.c_str();
 		}
 	private:
-		const char *_error;
+		std::string _error;
 	};
 
 private:
