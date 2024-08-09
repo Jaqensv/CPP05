@@ -6,7 +6,7 @@
 /*   By: mde-lang <mde-lang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:11:42 by mde-lang          #+#    #+#             */
-/*   Updated: 2024/08/07 14:59:38 by mde-lang         ###   ########.fr       */
+/*   Updated: 2024/08/09 15:10:35 by mde-lang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int main()
 {
-	Bureaucrat crat("George Abitbol", 1);
+	Bureaucrat crat("George Abitbol", 150);
 	try
 	{
 		//crat.downGrade();
